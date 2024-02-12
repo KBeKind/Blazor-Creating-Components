@@ -14,6 +14,7 @@ namespace Bethanys.Hrm.Client.Components
         private DateField dateFieldRef { set { dateFieldRefs.Add(value); } }
 
         private IEnumerable<BenefitEmployeeModel> benefits = null;
+
         [Inject]
         public IBenefitApiService BenefitApiService { get; set; }
 

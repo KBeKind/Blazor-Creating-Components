@@ -10,14 +10,37 @@
 }
 else
 {
-    <TableTemplate Items="Employees" IsSmall="false">
+@*     <TableTemplate Items="Employees" IsSmall="false">
         <TableHeader>
                 <th>Employee ID</th>
                 <th>First name</th>
                 <th>Last name</th>
                 <th></th>
         </TableHeader>
-        <RowTemplate>
+ *@
+
+
+ <table class="table">
+       <thead>
+                <th>Employee ID</th>
+                <th>First name</th>
+                <th>Last name</th>
+                <th></th>
+        </thead>
+
+        <tbody>
+
+            @foreach (var employee in Employees)
+            {
+                <EmployeeRow Employee="@employee" />
+            }
+
+
+
+
+        </tbody>
+    </table>
+@*         <RowTemplate>
             <td class="align-middle">
                 <img src="@($"images/{context.EmployeeId}-small.jpg")" class="rounded-circle" />
             </td>
@@ -33,12 +56,12 @@ else
             <td>
                 <a href="/employeedetail/@context.EmployeeId">Details</a>
             </td>
-        </RowTemplate>
-        <ChildTemplate>
+        </RowTemplate> *@
+        @* <ChildTemplate>
             <td colspan="6">
                 <BenefitSelector Employee="context" 
                     OnPremiumToggle="@(b => context.HasPremiumBenefits = b)" />
             </td>
-        </ChildTemplate>
-    </TableTemplate>
-}
+        </ChildTemplate> *@
+@*     </TableTemplate>
+ *@}
