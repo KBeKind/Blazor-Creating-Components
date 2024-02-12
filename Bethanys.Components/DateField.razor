@@ -1,0 +1,44 @@
+﻿@using Microsoft.AspNetCore.Components.Web
+
+
+@*@intro("Hi there!")*@
+<input type="date" value="@Date?.ToString(dateFormatString)" 
+    @onchange="OnDateChanged" @attributes="InputAttributes" />
+
+
+
+@code {
+    private RenderFragment<string> intro = text => @<h3>@text</h3>;
+    private string dateFormatString = "yyyy-MM-dd";
+    private DateTimeOffset? origDate;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object> InputAttributes { get; set; }
+
+    [Parameter]
+    public DateTimeOffset? Date { get; set; }
+
+    [Parameter]
+    public EventCallback<DateTimeOffset?> DateChanged { get; set; }
+
+    public async Task Revert()
+    {
+        if (Date != origDate)
+        {
+            Date = origDate;
+            await DateChanged.InvokeAsync(Date);
+        }
+    }
+
+    public async Task OnDateChanged(ChangeEventArgs e)
+    {
+        var date = (string)e.Value;
+        Date = DateTimeOffset.Parse(date);
+        await DateChanged.InvokeAsync(Date);
+    }
+
+    protected override void OnInitialized()
+    {
+        origDate = Date;
+    } 
+ }
