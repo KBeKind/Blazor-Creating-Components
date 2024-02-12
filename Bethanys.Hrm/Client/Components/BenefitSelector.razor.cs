@@ -57,8 +57,7 @@ namespace Bethanys.Hrm.Client.Components
 
         protected override async Task OnInitializedAsync()
         {
-            benefits = 
-                await BenefitApiService.GetForEmployee(Employee);
+            benefits = await BenefitApiService.GetForEmployee(Employee);
         }
     }
 }

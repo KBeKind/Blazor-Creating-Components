@@ -32,7 +32,7 @@ else
 
             @foreach (var employee in Employees)
             {
-                <EmployeeRow Employee="@employee" />
+                <EmployeeRow @key="employee" Employee="@employee" />
             }
 
 
