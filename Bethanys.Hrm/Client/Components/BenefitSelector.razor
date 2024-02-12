@@ -1,54 +1,107 @@
 ﻿@using Bethanys.Hrm.Shared;
 @if (benefits == null)
 {
-    <p><em>Loading...</em></p>
+	<p><em>Loading...</em></p>
 }
 else
 {
-    <div class="row">
-        <div class="col-md-8">
-            <TableTemplate Items="benefits" IsSmall="true">
-                <TableHeader>
-                    <th class="w-auto">Benefit</th>
-                    <th class="w-25">Start date</th>
-                    <th class="w-25">End date</th>
-                </TableHeader>
-                <RowTemplate>
-                    <td>
-                        <input type="checkbox"
-                               checked="@context.Selected"
-                        @onchange="e => CheckBoxChanged(e, context)" />
-                    </td>
-                    <td>@context.Description</td>
-                    @if (@context.Selected)
-                    {
-                        <td>@context.StartDate?.ToString("dd/MM/yyyy")</td>
-                        <td>
-                            <DateField @ref="dateFieldRef"
-                            @bind-Date="context.EndDate"
-                                       placeHolder="Enter a date"
-                                       required="required"
-                                       maxLength="50" />
-                        </td>
-                    }
-                    else
-                    {
-                        <td></td>
-                        <td></td>
-                    }
-                </RowTemplate>
-            </TableTemplate>
-        </div>
-        <div class="col-md-4 mt-1">
-            <button class="btn @Theme.ButtonClass" 
-                disabled="@SaveButtonDisabled"
-                @onclick="SaveClick">
-                Save
-            </button>
-            <button class="btn @Theme.ButtonClass"
-                @onclick="RevertClick">
-                Revert
-            </button>
-        </div>
-    </div>
+	<div class="row">
+		<div class="col-md-8">
+
+
+			<table class="table table-sm">
+				<thead>
+					<tr>
+						<th class="w-auto"></th>
+						<th class="w-auto">Benefit</th>
+						<th class="w-25">Start date</th>
+						<th class="w-25">End date</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var benefit in benefits)
+					{
+						<tr @key="benefit.BenefitId">
+							<td>
+								<input type="checkbox" checked="@benefit.Selected"
+									   @onchange="e => CheckBoxChanged(e, benefit)" />
+							</td>
+							<td>
+								@benefit.Description
+							</td>
+							@if (benefit.Selected)
+							{
+								<td>
+									@benefit.StartDate?.ToString("dd/MM/yyyy")
+								</td>
+								<td>
+									<input type="date" @bind="benefit.EndDate" />
+								</td>
+							}
+							else
+							{
+								<td></td>
+								<td></td>
+							}
+						</tr>
+					}
+
+
+				</tbody>
+
+
+
+			</table>
+			<div class="col-md-4 mt-1">
+				<button class="btn btn-primary" disabled="@SaveButtonDisabled"
+						@onclick="SaveClick">
+					Save
+				</button>
+			</div>
+
+
+			@*  <TableTemplate Items="benefits" IsSmall="true">
+		<TableHeader>
+		<th class="w-auto">Benefit</th>
+		<th class="w-25">Start date</th>
+		<th class="w-25">End date</th>
+		</TableHeader>
+		<RowTemplate>
+		<td>
+		<input type="checkbox"
+		checked="@context.Selected"
+		@onchange="e => CheckBoxChanged(e, context)" />
+		</td>
+		<td>@context.Description</td>
+		@if (@context.Selected)
+		{
+		<td>@context.StartDate?.ToString("dd/MM/yyyy")</td>
+		<td>
+		<DateField @ref="dateFieldRef"
+		@bind-Date="context.EndDate"
+		placeHolder="Enter a date"
+		required="required"
+		maxLength="50" />
+		</td>
+		}
+		else
+		{
+		<td></td>
+		<td></td>
+		}
+		</RowTemplate>
+		</TableTemplate>
+		</div>
+		<div class="col-md-4 mt-1">
+		<button class="btn @Theme.ButtonClass"
+		disabled="@SaveButtonDisabled"
+		@onclick="SaveClick">
+		Save
+		</button>
+		<button class="btn @Theme.ButtonClass"
+		@onclick="RevertClick">
+		Revert
+		</button> *@
+		</div>
+	</div>
 }

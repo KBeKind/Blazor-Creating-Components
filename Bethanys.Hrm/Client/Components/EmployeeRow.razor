@@ -1,4 +1,9 @@
-﻿<tr>
+﻿@{
+	var cssClass = Employee.HasPremiumBenefits ? "table-success" : "";
+}
+
+
+<tr class="@cssClass">
 	<td class="align-middle">
 		<img src="@($"images/{Employee.EmployeeId}-small.jpg")" class="rounded-circle" />
 	</td>
@@ -19,6 +24,9 @@
 @if (showBenefits)
 {
 	<tr>
-		Benefit selector
+		<td colspan="6">
+			<BenefitSelector Employee="@Employee" 
+				OnPremiumToggle="PremiumToggle"/>
+		</td>
 	</tr>
 }
