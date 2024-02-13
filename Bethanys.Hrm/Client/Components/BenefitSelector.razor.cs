@@ -33,23 +33,29 @@ namespace Bethanys.Hrm.Client.Components
                 await dateRef.Revert();
         }
 
-        public async Task CheckBoxChanged(ChangeEventArgs e,
-            BenefitEmployeeModel benefit)
-        {
-            var newValue = e.Value != null && (bool)e.Value;
-            benefit.Selected = newValue;
-            SaveButtonDisabled = false;
+		public void CheckBoxChanged(bool isSelected, int benefitId)
+		{
+			var benefit = benefits.FirstOrDefault(b => b.BenefitId == benefitId);
+			if (benefit != null)
+			{
+				benefit.Selected = isSelected;
+				SaveButtonDisabled = false;
 
-            if (newValue)
-            {
-                benefit.StartDate = DateTime.Now;
-                benefit.EndDate = DateTime.Now.AddYears(1);
-            }
-            await OnPremiumToggle.InvokeAsync(
-                benefits.Any(b => b.Premium && b.Selected));
-        }
+				// Adjust the dates if needed, similar logic as before
+				if (isSelected)
+				{
+					benefit.StartDate = DateTime.Now;
+					benefit.EndDate = DateTime.Now.AddYears(1);
+				}
 
-        public async Task SaveClick()
+				// Update premium toggle state
+				OnPremiumToggle.InvokeAsync(benefits.Any(b => b.Premium && b.Selected));
+			}
+		}
+
+
+
+		public async Task SaveClick()
         {
             await BenefitApiService.UpdateForEmployee(Employee, benefits);
             SaveButtonDisabled = true;

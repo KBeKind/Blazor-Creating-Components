@@ -21,29 +21,7 @@ else
 				<tbody>
 					@foreach (var benefit in benefits)
 					{
-						<tr @key="benefit.BenefitId">
-							<td>
-								<input type="checkbox" checked="@benefit.Selected"
-									   @onchange="e => CheckBoxChanged(e, benefit)" />
-							</td>
-							<td>
-								@benefit.Description
-							</td>
-							@if (benefit.Selected)
-							{
-								<td>
-									@benefit.StartDate?.ToString("dd/MM/yyyy")
-								</td>
-								<td>
-									<input type="date" @bind="benefit.EndDate" />
-								</td>
-							}
-							else
-							{
-								<td></td>
-								<td></td>
-							}
-						</tr>
+							<BenefitRow @key="benefit" Benefit="@benefit" OnCheckBoxChanged="@CheckBoxChanged" />
 					}
 
 
