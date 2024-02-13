@@ -10,8 +10,8 @@ namespace Bethanys.Hrm.Client.Components
     {
         private bool SaveButtonDisabled = true;
 
-        private List<DateField> dateFieldRefs = new List<DateField>();
-        private DateField dateFieldRef { set { dateFieldRefs.Add(value); } }
+        private List<BenefitRow> benefitRows = new List<BenefitRow>();
+        //private DateField dateFieldRef { set { dateFieldRefs.Add(value); } }
 
         private IEnumerable<BenefitEmployeeModel> benefits = null;
 
@@ -21,19 +21,27 @@ namespace Bethanys.Hrm.Client.Components
         [CascadingParameter]
         public Theme Theme { get; set; }
 
+        //[CascadingParameter(Name = "btnClass")]
+        //public string btnClass { get; set; }
+
         [Parameter]
         public EmployeeModel Employee { get; set; }
 
         [Parameter]
         public EventCallback<bool> OnPremiumToggle { get; set; }
 
+
+       
+
         private async Task RevertClick()
         {
-            foreach (var dateRef in dateFieldRefs)
-                await dateRef.Revert();
+            foreach (var rowRef in benefitRows)
+            {
+                await rowRef.RevertDateField();
+            }
         }
 
-		public void CheckBoxChanged(bool isSelected, int benefitId)
+        public void CheckBoxChanged(bool isSelected, int benefitId)
 		{
 			var benefit = benefits.FirstOrDefault(b => b.BenefitId == benefitId);
 			if (benefit != null)

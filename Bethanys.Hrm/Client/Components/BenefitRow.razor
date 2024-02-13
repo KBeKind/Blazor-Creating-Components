@@ -13,9 +13,8 @@
 			@Benefit.StartDate?.ToString("dd/MM/yyyy")
 		</td>
 		<td>
-			<DateField @bind-Date="Benefit.EndDate" />
-			 									<input type="date" @bind="Benefit.EndDate" />
-		
+			<DateField @bind-Date="Benefit.EndDate" InputAttributes="DateFieldInputAttributes" />
+
 		</td>
 	}
 	else
