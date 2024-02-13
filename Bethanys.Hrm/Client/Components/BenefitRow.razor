@@ -1,0 +1,25 @@
+﻿
+<tr @key="Benefit.BenefitId">
+	<td>
+ 		<input type="checkbox" checked="@Benefit.Selected"
+			   @onchange="e => HandleCheckboxChange(e)" /> 
+	</td>
+	<td>
+		@Benefit.Description
+	</td>
+	@if (Benefit.Selected)
+	{
+		<td>
+			@Benefit.StartDate?.ToString("dd/MM/yyyy")
+		</td>
+		<td>
+			<DateField @bind-Date="Benefit.EndDate" InputAttributes="DateFieldInputAttributes" />
+
+		</td>
+	}
+	else
+	{
+		<td></td>
+		<td></td>
+	}
+</tr>

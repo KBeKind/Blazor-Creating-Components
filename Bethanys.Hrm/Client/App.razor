@@ -1,19 +1,22 @@
 ﻿<Router AppAssembly="@typeof(App).Assembly">
-    <Found Context="routeData">
-        <CascadingValue Value="theme" IsFixed="true">
-            <RouteView RouteData="@routeData" 
-                DefaultLayout="@typeof(MainLayout)" />
-        </CascadingValue>
-        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
-    </Found>
-    <NotFound>
-        <PageTitle>Not found</PageTitle>
-        <LayoutView Layout="@typeof(MainLayout)">
-            <p role="alert">Sorry, there's nothing at this address.</p>
-        </LayoutView>
-    </NotFound>
+	<Found Context="routeData">
+		<CascadingValue Value="theme" IsFixed="true">
+			<CascadingValue Value="buttonClass" Name="btnClass" IsFixed="true">
+				<RouteView RouteData="@routeData"
+						   DefaultLayout="@typeof(MainLayout)" />
+			</CascadingValue>
+		</CascadingValue>
+		<FocusOnNavigate RouteData="@routeData" Selector="h1" />
+	</Found>
+	<NotFound>
+		<PageTitle>Not found</PageTitle>
+		<LayoutView Layout="@typeof(MainLayout)">
+			<p role="alert">Sorry, there's nothing at this address.</p>
+		</LayoutView>
+	</NotFound>
 </Router>
 
 @code {
-    private Theme theme = new Theme();
+	private Theme theme = new Theme();
+	private string buttonClass = "btn-danger";
 }

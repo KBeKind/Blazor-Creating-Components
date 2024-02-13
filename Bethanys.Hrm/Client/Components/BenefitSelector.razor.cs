@@ -10,8 +10,8 @@ namespace Bethanys.Hrm.Client.Components
     {
         private bool SaveButtonDisabled = true;
 
-        private List<DateField> dateFieldRefs = new List<DateField>();
-        private DateField dateFieldRef { set { dateFieldRefs.Add(value); } }
+        private List<BenefitRow> benefitRows = new List<BenefitRow>();
+        //private DateField dateFieldRef { set { dateFieldRefs.Add(value); } }
 
         private IEnumerable<BenefitEmployeeModel> benefits = null;
 
@@ -21,35 +21,49 @@ namespace Bethanys.Hrm.Client.Components
         [CascadingParameter]
         public Theme Theme { get; set; }
 
+        //[CascadingParameter(Name = "btnClass")]
+        //public string btnClass { get; set; }
+
         [Parameter]
         public EmployeeModel Employee { get; set; }
 
         [Parameter]
         public EventCallback<bool> OnPremiumToggle { get; set; }
 
+
+       
+
         private async Task RevertClick()
         {
-            foreach (var dateRef in dateFieldRefs)
-                await dateRef.Revert();
-        }
-
-        public async Task CheckBoxChanged(ChangeEventArgs e,
-            BenefitEmployeeModel benefit)
-        {
-            var newValue = e.Value != null && (bool)e.Value;
-            benefit.Selected = newValue;
-            SaveButtonDisabled = false;
-
-            if (newValue)
+            foreach (var rowRef in benefitRows)
             {
-                benefit.StartDate = DateTime.Now;
-                benefit.EndDate = DateTime.Now.AddYears(1);
+                await rowRef.RevertDateField();
             }
-            await OnPremiumToggle.InvokeAsync(
-                benefits.Any(b => b.Premium && b.Selected));
         }
 
-        public async Task SaveClick()
+        public void CheckBoxChanged(bool isSelected, int benefitId)
+		{
+			var benefit = benefits.FirstOrDefault(b => b.BenefitId == benefitId);
+			if (benefit != null)
+			{
+				benefit.Selected = isSelected;
+				SaveButtonDisabled = false;
+
+				// Adjust the dates if needed, similar logic as before
+				if (isSelected)
+				{
+					benefit.StartDate = DateTime.Now;
+					benefit.EndDate = DateTime.Now.AddYears(1);
+				}
+
+				// Update premium toggle state
+				OnPremiumToggle.InvokeAsync(benefits.Any(b => b.Premium && b.Selected));
+			}
+		}
+
+
+
+		public async Task SaveClick()
         {
             await BenefitApiService.UpdateForEmployee(Employee, benefits);
             SaveButtonDisabled = true;
